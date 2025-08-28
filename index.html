@@ -3,23 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jogo da Forca</title>
+    <title>Qual a Cor?</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="game-container">
-        <h1>Jogo da Forca</h1>
-        
-        <div class="game-display">
-            <img id="forca-img" src="https://i.ibb.co/L5QyL3R/forca-0.png" alt="Imagem da Forca">
-            <h2 id="palavra-display"></h2>
+        <h1>Qual a Cor?</h1>
+        <p>Clique na caixa de cor que corresponde ao nome:</p>
+        <h2 id="color-name"></h2>
+        <div class="color-options">
+            <div class="color-box" data-color="red"></div>
+            <div class="color-box" data-color="blue"></div>
+            <div class="color-box" data-color="green"></div>
+            <div class="color-box" data-color="yellow"></div>
         </div>
-
         <p id="message"></p>
-        
-        <div id="letras-botoes"></div>
-        
-        <button id="restart-btn" class="hidden">Reiniciar</button>
+        <button id="restart-btn">Reiniciar</button>
     </div>
     <script src="script.js"></script>
 </body>

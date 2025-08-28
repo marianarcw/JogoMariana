@@ -1,98 +1,51 @@
-const palavraDisplay = document.getElementById('palavra-display');
-const forcaImg = document.getElementById('forca-img');
-const letrasBotoes = document.getElementById('letras-botoes');
+const colorNameEl = document.getElementById('color-name');
+const colorBoxes = document.querySelectorAll('.color-box');
 const messageEl = document.getElementById('message');
 const restartBtn = document.getElementById('restart-btn');
 
-const palavras = ['PROGRAMACAO', 'JAVASCRIPT', 'TECNOLOGIA', 'COMPUTADOR', 'DESENVOLVEDOR'];
-const forcaImagens = [
-    'https://i.ibb.co/L5QyL3R/forca-0.png',
-    'https://i.ibb.co/Rz95M9s/forca-1.png',
-    'https://i.ibb.co/jT8B0Jz/forca-2.png',
-    'https://i.ibb.co/WcT1W9d/forca-3.png',
-    'https://i.ibb.co/P48n35V/forca-4.png',
-    'https://i.ibb.co/Csg641J/forca-5.png',
-    'https://i.ibb.co/D8dYh7Z/forca-6.png'
+const colors = [
+    { name: 'VERMELHO', value: 'red' },
+    { name: 'AZUL', value: 'blue' },
+    { name: 'VERDE', value: 'green' },
+    { name: 'AMARELO', value: 'yellow' }
 ];
 
-let palavraSecreta;
-let letrasCorretas = [];
-let letrasErradas = [];
-const maxErros = 6;
+let correctColor;
 
-function escolherPalavra() {
-    palavraSecreta = palavras[Math.floor(Math.random() * palavras.length)];
-}
+function startGame() {
+    // Escolhe uma cor aleatória
+    const randomIndex = Math.floor(Math.random() * colors.length);
+    correctColor = colors[randomIndex].value;
+    colorNameEl.textContent = colors[randomIndex].name;
 
-function exibirPalavra() {
-    palavraDisplay.textContent = palavraSecreta
-        .split('')
-        .map(letra => (letrasCorretas.includes(letra) ? letra : '_'))
-        .join(' ');
-}
-
-function verificarLetra(letra) {
-    if (letrasErradas.includes(letra) || letrasCorretas.includes(letra)) {
-        return;
-    }
-
-    if (palavraSecreta.includes(letra)) {
-        letrasCorretas.push(letra);
-    } else {
-        letrasErradas.push(letra);
-    }
-
-    atualizarJogo();
-}
-
-function atualizarJogo() {
-    exibirPalavra();
-    atualizarForca();
-    checarFimDeJogo();
-}
-
-function atualizarForca() {
-    forcaImg.src = forcaImagens[letrasErradas.length];
-}
-
-function checarFimDeJogo() {
-    if (letrasErradas.length >= maxErros) {
-        mensagemFimDeJogo('Você perdeu! A palavra era: ' + palavraSecreta);
-    } else if (!palavraDisplay.textContent.includes('_')) {
-        mensagemFimDeJogo('Parabéns! Você venceu!');
-    }
-}
-
-function mensagemFimDeJogo(mensagem) {
-    messageEl.textContent = mensagem;
-    letrasBotoes.querySelectorAll('button').forEach(btn => btn.disabled = true);
-    restartBtn.classList.remove('hidden');
-}
-
-function gerarBotoesLetras() {
-    letrasBotoes.innerHTML = '';
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(letra => {
-        const btn = document.createElement('button');
-        btn.textContent = letra;
-        btn.addEventListener('click', () => {
-            verificarLetra(letra);
-            btn.disabled = true;
-        });
-        letrasBotoes.appendChild(btn);
-    });
-}
-
-function reiniciarJogo() {
-    letrasCorretas = [];
-    letrasErradas = [];
     messageEl.textContent = '';
-    restartBtn.classList.add('hidden');
-    
-    escolherPalavra();
-    exibirPalavra();
-    atualizarForca();
-    gerarBotoesLetras();
 }
 
-reiniciarJogo();
-restartBtn.addEventListener('click', reiniciarJogo);
+function handleGuess(event) {
+    const selectedColor = event.target.dataset.color;
+
+    if (selectedColor === correctColor) {
+        messageEl.textContent = 'Parabéns! Você acertou!';
+        messageEl.style.color = 'green';
+    } else {
+        messageEl.textContent = 'Ops, você errou. Tente de novo.';
+        messageEl.style.color = 'red';
+    }
+}
+
+function restartGame() {
+    startGame();
+    messageEl.textContent = '';
+    messageEl.style.color = 'black';
+}
+
+// Adiciona o evento de clique em cada caixa de cor
+colorBoxes.forEach(box => {
+    box.addEventListener('click', handleGuess);
+});
+
+// Adiciona o evento de clique no botão de reiniciar
+restartBtn.addEventListener('click', restartGame);
+
+// Inicia o jogo quando a página carrega
+document.addEventListener('DOMContentLoaded', startGame);
