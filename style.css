@@ -20,9 +20,62 @@ h1 {
     color: #333;
 }
 
-#start-button {
-    padding: 20px 40px;
-    font-size: 1.5em;
+.game-display {
+    margin: 20px 0;
+}
+
+#forca-img {
+    width: 150px;
+    height: auto;
+}
+
+#palavra-display {
+    font-size: 2em;
+    letter-spacing: 5px;
+    margin-top: 10px;
+}
+
+#letras-botoes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
+    margin: 20px 0;
+}
+
+#letras-botoes button {
+    width: 35px;
+    height: 35px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #ecf0f1;
+    color: #333;
+    transition: background-color 0.3s;
+}
+
+#letras-botoes button:hover:not(:disabled) {
+    background-color: #bdc3c7;
+}
+
+#letras-botoes button:disabled {
+    cursor: not-allowed;
+    background-color: #95a5a6;
+    color: #fff;
+}
+
+#message {
+    font-size: 1.2em;
+    font-weight: bold;
+    min-height: 25px;
+    color: #c0392b;
+}
+
+#restart-btn {
+    padding: 10px 20px;
+    font-size: 1em;
     cursor: pointer;
     border: none;
     border-radius: 5px;
@@ -31,13 +84,10 @@ h1 {
     transition: background-color 0.3s;
 }
 
-#start-button:hover {
+#restart-btn:hover {
     background-color: #27ae60;
 }
 
-#time-display {
-    margin-top: 20px;
-    font-size: 2em;
-    font-weight: bold;
-    min-height: 30px;
+.hidden {
+    display: none;
 }

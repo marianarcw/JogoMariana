@@ -3,15 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teste de Reflexo</title>
+    <title>Jogo da Forca</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="game-container">
-        <h1>Teste de Reflexo</h1>
-        <p>Clique no botão o mais rápido possível!</p>
-        <button id="start-button">Começar</button>
-        <p id="time-display"></p>
+        <h1>Jogo da Forca</h1>
+        
+        <div class="game-display">
+            <img id="forca-img" src="forca-0.png" alt="Imagem da Forca">
+            <h2 id="palavra-display"></h2>
+        </div>
+
+        <p id="message"></p>
+        
+        <div id="letras-botoes"></div>
+        
+        <button id="restart-btn" class="hidden">Reiniciar</button>
     </div>
     <script src="script.js"></script>
 </body>
