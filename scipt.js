@@ -1,107 +1,51 @@
-const memoryGrid = document.querySelector('.memory-grid');
-const restartBtn = document.getElementById('restart-btn');
+const userScoreEl = document.getElementById('user-score');
+const computerScoreEl = document.getElementById('computer-score');
+const resultMessageEl = document.querySelector('.result-message');
+const choicesBtns = document.querySelectorAll('.choices button');
 
-const symbols = ['🍎', '🍌', '🍇', '🍉', '🍓', '🍒', '🍋', '🍑'];
-const cards = [...symbols, ...symbols];
+let userScore = 0;
+let computerScore = 0;
 
-let hasFlippedCard = false;
-let lockBoard = false;
-let firstCard, secondCard;
-let matchedPairs = 0;
-
-function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
+function getComputerChoice() {
+    const choices = ['pedra', 'papel', 'tesoura'];
+    const randomIndex = Math.floor(Math.random() * choices.length);
+    return choices[randomIndex];
 }
 
-function createCard(symbol) {
-    const card = document.createElement('div');
-    card.classList.add('card');
-    card.dataset.symbol = symbol;
+function playRound(userChoice) {
+    const computerChoice = getComputerChoice();
+    let result = '';
 
-    const cardFace = document.createElement('div');
-    cardFace.classList.add('card-face');
-    cardFace.textContent = symbol;
-
-    const cardBack = document.createElement('div');
-    cardBack.classList.add('card-back');
-    cardBack.textContent = '?';
-
-    card.appendChild(cardFace);
-    card.appendChild(cardBack);
-
-    card.addEventListener('click', flipCard);
-    return card;
-}
-
-function generateCards() {
-    shuffle(cards);
-    memoryGrid.innerHTML = '';
-    cards.forEach(symbol => {
-        memoryGrid.appendChild(createCard(symbol));
-    });
-}
-
-function flipCard() {
-    if (lockBoard) return;
-    if (this === firstCard) return;
-
-    this.classList.add('flipped');
-
-    if (!hasFlippedCard) {
-        hasFlippedCard = true;
-        firstCard = this;
+    if (userChoice === computerChoice) {
+        result = 'Empate!';
+    } else if (
+        (userChoice === 'pedra' && computerChoice === 'tesoura') ||
+        (userChoice === 'papel' && computerChoice === 'pedra') ||
+        (userChoice === 'tesoura' && computerChoice === 'papel')
+    ) {
+        userScore++;
+        result = `Você venceu! ${userChoice} vence ${computerChoice}.`;
     } else {
-        hasFlippedCard = false;
-        secondCard = this;
-
-        checkForMatch();
-    }
-}
-
-function checkForMatch() {
-    let isMatch = firstCard.dataset.symbol === secondCard.dataset.symbol;
-    isMatch ? disableCards() : unflipCards();
-}
-
-function disableCards() {
-    firstCard.removeEventListener('click', flipCard);
-    secondCard.removeEventListener('click', flipCard);
-
-    firstCard.classList.add('matched');
-    secondCard.classList.add('matched');
-
-    matchedPairs++;
-    if (matchedPairs === symbols.length) {
-        setTimeout(() => alert('Parabéns! Você venceu!'), 500);
+        computerScore++;
+        result = `Você perdeu! ${computerChoice} vence ${userChoice}.`;
     }
 
-    resetBoard();
+    updateScore(userScore, computerScore);
+    updateResult(result);
 }
 
-function unflipCards() {
-    lockBoard = true;
-    setTimeout(() => {
-        firstCard.classList.remove('flipped');
-        secondCard.classList.remove('flipped');
-        resetBoard();
-    }, 1000);
+function updateScore(user, computer) {
+    userScoreEl.textContent = `Sua Pontuação: ${user}`;
+    computerScoreEl.textContent = `IA Pontuação: ${computer}`;
 }
 
-function resetBoard() {
-    [hasFlippedCard, lockBoard] = [false, false];
-    [firstCard, secondCard] = [null, null];
+function updateResult(message) {
+    resultMessageEl.textContent = message;
 }
 
-function restartGame() {
-    matchedPairs = 0;
-    resetBoard();
-    generateCards();
-}
-
-restartBtn.addEventListener('click', restartGame);
-
-// Inicia o jogo
-document.addEventListener('DOMContentLoaded', generateCards);
+choicesBtns.forEach(button => {
+    button.addEventListener('click', () => {
+        const userChoice = button.id;
+        playRound(userChoice);
+    });
+});

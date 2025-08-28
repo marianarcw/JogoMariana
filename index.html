@@ -3,14 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jogo da Memória</title>
+    <title>Pedra, Papel, Tesoura</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="game-container">
-        <h1>Jogo da Memória</h1>
-        <div class="memory-grid"></div>
-        <button id="restart-btn">Reiniciar Jogo</button>
+        <h1>Pedra, Papel e Tesoura</h1>
+        <div class="score-board">
+            <div id="user-score">Sua Pontuação: 0</div>
+            <div id="computer-score">IA Pontuação: 0</div>
+        </div>
+        <div class="choices">
+            <button id="rock">Pedra</button>
+            <button id="paper">Papel</button>
+            <button id="scissors">Tesoura</button>
+        </div>
+        <div class="result-message">Escolha sua jogada!</div>
     </div>
     <script src="script.js"></script>
 </body>
