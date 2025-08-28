@@ -5,6 +5,16 @@ const messageEl = document.getElementById('message');
 const restartBtn = document.getElementById('restart-btn');
 
 const palavras = ['PROGRAMACAO', 'JAVASCRIPT', 'TECNOLOGIA', 'COMPUTADOR', 'DESENVOLVEDOR'];
+const forcaImagens = [
+    'https://i.ibb.co/L5QyL3R/forca-0.png',
+    'https://i.ibb.co/Rz95M9s/forca-1.png',
+    'https://i.ibb.co/jT8B0Jz/forca-2.png',
+    'https://i.ibb.co/WcT1W9d/forca-3.png',
+    'https://i.ibb.co/P48n35V/forca-4.png',
+    'https://i.ibb.co/Csg641J/forca-5.png',
+    'https://i.ibb.co/D8dYh7Z/forca-6.png'
+];
+
 let palavraSecreta;
 let letrasCorretas = [];
 let letrasErradas = [];
@@ -42,7 +52,7 @@ function atualizarJogo() {
 }
 
 function atualizarForca() {
-    forcaImg.src = `forca-${letrasErradas.length}.png`;
+    forcaImg.src = forcaImagens[letrasErradas.length];
 }
 
 function checarFimDeJogo() {
@@ -84,6 +94,5 @@ function reiniciarJogo() {
     gerarBotoesLetras();
 }
 
-// Inicia o jogo quando a página carrega
 reiniciarJogo();
 restartBtn.addEventListener('click', reiniciarJogo);
