@@ -1,56 +1,35 @@
-const guessInput = document.getElementById('guess-input');
-const submitBtn = document.getElementById('submit-btn');
-const messageEl = document.getElementById('message');
-const restartBtn = document.getElementById('restart-btn');
+const startButton = document.getElementById('start-button');
+const timeDisplay = document.getElementById('time-display');
 
-let secretNumber;
+let startTime;
+let hasStarted = false;
 
-function generateSecretNumber() {
-    // Gera um número aleatório entre 1 e 100
-    secretNumber = Math.floor(Math.random() * 100) + 1;
-}
+function startGame() {
+    if (!hasStarted) {
+        hasStarted = true;
+        startButton.textContent = 'Clique!';
+        timeDisplay.textContent = 'Aguardando...';
 
-function checkGuess() {
-    const userGuess = parseInt(guessInput.value);
+        // Mudar a cor do botão para indicar que é hora de clicar
+        startButton.style.backgroundColor = '#e74c3c';
 
-    // Verifica se a entrada é um número válido
-    if (isNaN(userGuess) || userGuess < 1 || userGuess > 100) {
-        setMessage('Por favor, digite um número válido entre 1 e 100.');
-        return;
-    }
-
-    if (userGuess === secretNumber) {
-        setMessage(`Parabéns! Você adivinhou o número ${secretNumber}!`);
-        endGame();
-    } else if (userGuess < secretNumber) {
-        setMessage('O número é maior. Tente novamente.');
+        // Esconde o botão e mostra de novo após um tempo aleatório
+        setTimeout(() => {
+            startButton.style.display = 'block';
+            startButton.style.backgroundColor = '#3498db';
+            startButton.textContent = 'Clique agora!';
+            startTime = Date.now();
+        }, Math.random() * 2000 + 1000); // Aparece entre 1 e 3 segundos
     } else {
-        setMessage('O número é menor. Tente novamente.');
+        const endTime = Date.now();
+        const reactionTime = endTime - startTime;
+        timeDisplay.textContent = `Seu tempo de reação: ${reactionTime} ms`;
+
+        // Resetar o jogo
+        hasStarted = false;
+        startButton.textContent = 'Começar de novo';
+        startButton.style.backgroundColor = '#2ecc71';
     }
 }
 
-function setMessage(message) {
-    messageEl.textContent = message;
-}
-
-function endGame() {
-    submitBtn.disabled = true;
-    guessInput.disabled = true;
-    restartBtn.classList.remove('hidden');
-}
-
-function restartGame() {
-    generateSecretNumber();
-    guessInput.value = '';
-    setMessage('');
-    submitBtn.disabled = false;
-    guessInput.disabled = false;
-    restartBtn.classList.add('hidden');
-}
-
-// Adiciona os eventos de clique
-submitBtn.addEventListener('click', checkGuess);
-restartBtn.addEventListener('click', restartGame);
-
-// Inicia o jogo quando a página carrega
-generateSecretNumber();
+startButton.addEventListener('click', startGame);
