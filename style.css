@@ -20,29 +20,22 @@ h1 {
     color: #333;
 }
 
-.score-board {
-    display: flex;
-    justify-content: space-around;
-    font-size: 1.2em;
+.input-container {
     margin: 20px 0;
-}
-
-#user-score {
-    color: #27ae60;
-}
-
-#computer-score {
-    color: #c0392b;
-}
-
-.choices {
     display: flex;
     justify-content: center;
-    gap: 15px;
-    margin: 20px 0;
+    gap: 10px;
 }
 
-.choices button {
+#guess-input {
+    padding: 10px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+}
+
+#submit-btn, #restart-btn {
     padding: 10px 20px;
     font-size: 1em;
     cursor: pointer;
@@ -53,13 +46,20 @@ h1 {
     transition: background-color 0.3s;
 }
 
-.choices button:hover {
+#submit-btn:hover, #restart-btn:hover {
     background-color: #2980b9;
 }
 
-.result-message {
-    font-size: 1.5em;
-    font-weight: bold;
-    min-height: 40px;
+.message-area {
     margin-top: 20px;
+    min-height: 25px;
+}
+
+#message {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.hidden {
+    display: none;
 }
