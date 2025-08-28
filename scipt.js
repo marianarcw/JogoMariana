@@ -1,22 +1,15 @@
-const memoryGrid = document.querySelector('.memory-grid');
-const restartBtn = document.getElementById('restart-btn');
+const gameBoard = document.querySelector('.game-board');
+const restartButton = document.getElementById('restart-button');
 
-const symbols = ['🍎', '🍌', '🍇', '🍉', '🍓', '🍒', '🍋', '🍑'];
-const cards = [...symbols, ...symbols];
+const symbols = ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼'];
+const cardValues = [...symbols, ...symbols];
 
 let hasFlippedCard = false;
 let lockBoard = false;
 let firstCard, secondCard;
 let matchedPairs = 0;
 
-function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-}
-
-function createCard(symbol) {
+function createCardElement(symbol) {
     const card = document.createElement('div');
     card.classList.add('card');
     card.dataset.symbol = symbol;
@@ -36,11 +29,18 @@ function createCard(symbol) {
     return card;
 }
 
-function generateCards() {
-    shuffle(cards);
-    memoryGrid.innerHTML = '';
-    cards.forEach(symbol => {
-        memoryGrid.appendChild(createCard(symbol));
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
+function generateBoard() {
+    shuffle(cardValues);
+    gameBoard.innerHTML = '';
+    cardValues.forEach(symbol => {
+        gameBoard.appendChild(createCardElement(symbol));
     });
 }
 
@@ -56,14 +56,18 @@ function flipCard() {
     } else {
         hasFlippedCard = false;
         secondCard = this;
-
         checkForMatch();
     }
 }
 
 function checkForMatch() {
-    let isMatch = firstCard.dataset.symbol === secondCard.dataset.symbol;
-    isMatch ? disableCards() : unflipCards();
+    const isMatch = firstCard.dataset.symbol === secondCard.dataset.symbol;
+
+    if (isMatch) {
+        disableCards();
+    } else {
+        unflipCards();
+    }
 }
 
 function disableCards() {
@@ -98,9 +102,9 @@ function resetBoard() {
 function restartGame() {
     matchedPairs = 0;
     resetBoard();
-    generateCards();
+    generateBoard();
 }
 
-restartBtn.addEventListener('click', restartGame);
+restartButton.addEventListener('click', restartGame);
 
-document.addEventListener('DOMContentLoaded', generateCards);
+document.addEventListener('DOMContentLoaded', generateBoard);
