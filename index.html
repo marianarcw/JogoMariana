@@ -3,14 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jogo da Memória</title>
+    <title>Clique na Cor Certa</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="game-container">
-        <h1>Jogo da Memória</h1>
-        <div class="game-board"></div>
-        <button id="restart-button">Reiniciar</button>
+        <h1>Clique na Cor Certa</h1>
+        <p id="instruction">Clique na caixa de cor que corresponde à palavra.</p>
+        <h2 id="color-name"></h2>
+        <div class="options">
+            <div class="box" data-color="red"></div>
+            <div class="box" data-color="blue"></div>
+            <div class="box" data-color="green"></div>
+        </div>
+        <p id="message"></p>
+        <button id="next-button">Próxima</button>
     </div>
     <script src="script.js"></script>
 </body>

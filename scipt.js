@@ -1,110 +1,32 @@
-const gameBoard = document.querySelector('.game-board');
-const restartButton = document.getElementById('restart-button');
+const colorName = document.getElementById('color-name');
+const boxes = document.querySelectorAll('.box');
+const message = document.getElementById('message');
+const nextButton = document.getElementById('next-button');
 
-const symbols = ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼'];
-const cardValues = [...symbols, ...symbols];
+const colors = ['red', 'blue', 'green'];
+let correctColor;
 
-let hasFlippedCard = false;
-let lockBoard = false;
-let firstCard, secondCard;
-let matchedPairs = 0;
-
-function createCardElement(symbol) {
-    const card = document.createElement('div');
-    card.classList.add('card');
-    card.dataset.symbol = symbol;
-
-    const cardFace = document.createElement('div');
-    cardFace.classList.add('card-face');
-    cardFace.textContent = symbol;
-
-    const cardBack = document.createElement('div');
-    cardBack.classList.add('card-back');
-    cardBack.textContent = '?';
-
-    card.appendChild(cardFace);
-    card.appendChild(cardBack);
-
-    card.addEventListener('click', flipCard);
-    return card;
+function setupGame() {
+    correctColor = colors[Math.floor(Math.random() * colors.length)];
+    colorName.textContent = correctColor.toUpperCase();
+    message.textContent = '';
 }
 
-function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-}
-
-function generateBoard() {
-    shuffle(cardValues);
-    gameBoard.innerHTML = '';
-    cardValues.forEach(symbol => {
-        gameBoard.appendChild(createCardElement(symbol));
-    });
-}
-
-function flipCard() {
-    if (lockBoard) return;
-    if (this === firstCard) return;
-
-    this.classList.add('flipped');
-
-    if (!hasFlippedCard) {
-        hasFlippedCard = true;
-        firstCard = this;
+function checkAnswer(event) {
+    const clickedColor = event.target.dataset.color;
+    if (clickedColor === correctColor) {
+        message.textContent = 'Correto! 🎉';
+        message.style.color = 'green';
     } else {
-        hasFlippedCard = false;
-        secondCard = this;
-        checkForMatch();
+        message.textContent = 'Errado. Tente de novo.';
+        message.style.color = 'red';
     }
 }
 
-function checkForMatch() {
-    const isMatch = firstCard.dataset.symbol === secondCard.dataset.symbol;
+boxes.forEach(box => {
+    box.addEventListener('click', checkAnswer);
+});
 
-    if (isMatch) {
-        disableCards();
-    } else {
-        unflipCards();
-    }
-}
+nextButton.addEventListener('click', setupGame);
 
-function disableCards() {
-    firstCard.removeEventListener('click', flipCard);
-    secondCard.removeEventListener('click', flipCard);
-
-    firstCard.classList.add('matched');
-    secondCard.classList.add('matched');
-
-    matchedPairs++;
-    if (matchedPairs === symbols.length) {
-        setTimeout(() => alert('Parabéns! Você venceu!'), 500);
-    }
-
-    resetBoard();
-}
-
-function unflipCards() {
-    lockBoard = true;
-    setTimeout(() => {
-        firstCard.classList.remove('flipped');
-        secondCard.classList.remove('flipped');
-        resetBoard();
-    }, 1000);
-}
-
-function resetBoard() {
-    [hasFlippedCard, lockBoard] = [false, false];
-    [firstCard, secondCard] = [null, null];
-}
-
-function restartGame() {
-    matchedPairs = 0;
-    resetBoard();
-    generateBoard();
-}
-
-restartButton.addEventListener('click', restartGame);
-
-document.addEventListener('DOMContentLoaded', generateBoard);
+document.addEventListener('DOMContentLoaded', setupGame);
